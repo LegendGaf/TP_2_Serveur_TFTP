@@ -30,6 +30,21 @@ enum tftp_err {
 	TFTPSERV_ERR,
 };
 
+enum tftp_operation {
+    TFTPOP_RRQ = 1,
+    TFTPOP_WRQ = 2,
+    TFTPOP_DATA = 3,
+    TFTPOP_ACK = 4,
+    TFTPOP_ERR = 5,
+    TFTPOP_OK,
+    TFTPOP_NOK,
+};
+
+
+struct opCode {
+    enum tftp_operation tftp_code;
+    enum tftp_operation code_validate;
+};
 /***
  * Initialize the file system by calling « tftp_file_init() » and creates and bind the netconn
  */
