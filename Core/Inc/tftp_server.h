@@ -7,6 +7,10 @@
 #define TFTP_SERVER_H_
 
 #include "lwip/sys.h"
+#include "tftp_file.h"
+#include "lwip.h"
+#include "lwip/api.h"
+#include <string.h>
 
 #define MAX_CHUNCK_SIZE 512	// Maximal number of octets from the file sent in one packet
 
@@ -34,6 +38,6 @@ enum tftp_err tftp_server_init(void);
 /***
  * Wait for a request and handle the file transfer
  */
-void tftp_server_run(void );
+void tftp_server_run(void);
 
 #endif /* TFTP_SERVER_H_ */
