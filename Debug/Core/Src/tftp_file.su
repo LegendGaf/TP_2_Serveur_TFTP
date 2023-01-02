@@ -1,0 +1,3 @@
+../Core/Src/tftp_file.c:21:6:tftp_file_init	16	static
+../Core/Src/tftp_file.c:28:8:tftp_file_open	16	static
+../Core/Src/tftp_file.c:38:8:tftp_file_getbyte	24	static
