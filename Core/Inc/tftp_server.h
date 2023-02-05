@@ -12,6 +12,19 @@
 #include "lwip/api.h"
 #include <string.h>
 
+
+static struct netconn *tftp_server;
+static struct netbuf *buf;
+static ip_addr_t *addr;
+static unsigned short port;
+static u8_t *dataptr;
+static u16_t len;
+static int flag_client = 1;
+static u8_t *dataToSend;
+static u16_t block_counter;
+static int byte_counter;
+static u16_t blocksToSend;
+
 #define MAX_CHUNCK_SIZE 512	// Maximal number of octets from the file sent in one packet
 
 /**
@@ -54,5 +67,20 @@ enum tftp_err tftp_server_init(void);
  * Wait for a request and handle the file transfer
  */
 void tftp_server_run(void);
+
+
+/**
+ * Check the operation code and signal if the request is valid or not
+ */
+
+struct opCode check_opcode(u8_t *data);
+
+
+/**
+ *  Send the data within the file "param"
+ */
+void respond_RRQ(u8_t *data);
+
+
 
 #endif /* TFTP_SERVER_H_ */

@@ -21,11 +21,11 @@ void tftp_file_init();
 void * tftp_file_open(char * pfilename);
 
 /**
- * Returns a pointer to an octet array containing the next chunck of the file
- * The maximal length of each chunck (in number of octets) is set by the CHUNCK_MAX_SIZE parameter
- * The size of the chunck is CHUNCK_MAX_SIZE octet if at least CHUNCK_MAX_SIZE octets remain in the file,
- * otherwise, it contains the remaining octets from the file
- * The length of the chunck is written in *len
+Renvoie un pointeur vers un tableau d'octets contenant le prochain morceau du fichier.
+La longueur maximale de chaque morceau (en nombre d'octets) est définie par le paramètre CHUNCK_MAX_SIZE.
+La taille du morceau est l'octet CHUNCK_MAX_SIZE s'il reste au moins CHUNCK_MAX_SIZE octets dans le fichier,
+sinon, il contient les octets restants du fichier.
+La longueur du morceau est écrite dans *len.
  */
 u8_t * tftp_file_getbyte(void * pfile);
 
