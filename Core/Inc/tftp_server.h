@@ -19,28 +19,28 @@ static ip_addr_t *addr;
 static unsigned short port;
 static u8_t *dataptr;
 static u16_t len;
-static int flag_client = 1;
+static int jeton = 1;
 static u8_t *dataToSend;
 static u16_t block_counter;
 static int byte_counter;
 static u16_t blocksToSend;
 
-#define MAX_CHUNCK_SIZE 512	// Maximal number of octets from the file sent in one packet
+#define MAX_CHUNCK_SIZE 512    // Maximal number of octets from the file sent in one packet
 
 /**
  * Error codes to be used by TFTP functions
  */
 enum tftp_err {
-	TFTPSERV_UNDEFINED_ERROR = 0,
-	TFTPSERV_NO_SUCH_FILE = 1,
-	TFTPSERV_ACCESS_VIOLATION = 2,
-	TFTPSERV_DISK_FULL = 3,
-	TFTPSERV_ILLEGAL_OPERATION = 4,
-	TFTPSERV_UNKNOWN_ID = 5,
-	TFTPSERV_FILE_ALLREADY_EXISTS = 6,
-	TFTPSERV_NO_SUCH_USER = 7,
-	TFTPSERV_OK,
-	TFTPSERV_ERR,
+    TFTPSERV_UNDEFINED_ERROR = 0,
+    TFTPSERV_NO_SUCH_FILE = 1,
+    TFTPSERV_ACCESS_VIOLATION = 2,
+    TFTPSERV_DISK_FULL = 3,
+    TFTPSERV_ILLEGAL_OPERATION = 4,
+    TFTPSERV_UNKNOWN_ID = 5,
+    TFTPSERV_FILE_ALLREADY_EXISTS = 6,
+    TFTPSERV_NO_SUCH_USER = 7,
+    TFTPSERV_OK,
+    TFTPSERV_ERR,
 };
 
 enum tftp_operation {
@@ -58,6 +58,7 @@ struct opCode {
     enum tftp_operation tftp_code;
     enum tftp_operation code_validate;
 };
+
 /***
  * Initialize the file system by calling « tftp_file_init() » and creates and bind the netconn
  */
@@ -80,7 +81,6 @@ struct opCode check_opcode(u8_t *data);
  *  Send the data within the file "param"
  */
 void respond_RRQ(u8_t *data);
-
 
 
 #endif /* TFTP_SERVER_H_ */

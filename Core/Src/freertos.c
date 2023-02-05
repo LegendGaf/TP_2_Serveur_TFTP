@@ -22,6 +22,8 @@
 #include "task.h"
 #include "main.h"
 #include "cmsis_os.h"
+#include "tftp_server.h"
+#include "usart.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -83,6 +85,7 @@ void vApplicationGetIdleTaskMemory( StaticTask_t **ppxIdleTaskTCBBuffer, StackTy
 void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN Init */
 
+
   /* USER CODE END Init */
 
   /* USER CODE BEGIN RTOS_MUTEX */
@@ -122,12 +125,26 @@ void MX_FREERTOS_Init(void) {
 void StartDefaultTask(void const * argument)
 {
   /* init code for LWIP */
-  MX_LWIP_Init();
+    MX_LWIP_Init();
+    uint8_t MSG[35] = {'\0'};
+    uint8_t X = 0;
+    X = tftp_server_init();
+    if (X == 8) {
+        for (int i = 0; i < 8; ++i) {
+            HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_0);//Toggle LED_1 GREEN
+            HAL_Delay(100);
+        }
+    } else {
+        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_14, GPIO_PIN_SET);//Toggle LED_3 RED
+    }
+    sprintf(MSG, " tftp_server_init return = %d\r\n", X);
+    HAL_UART_Transmit(&huart3, MSG, sizeof(MSG), 100);
+
   /* USER CODE BEGIN StartDefaultTask */
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+      tftp_server_run();
   }
   /* USER CODE END StartDefaultTask */
 }

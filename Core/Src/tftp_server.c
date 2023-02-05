@@ -36,7 +36,6 @@ void tftp_server_run(void) {
                 /* On traite la requete "RRQ" du client */
                 respond_RRQ(dataptr);
             }
-            //else log
         }
     }
 }
@@ -83,18 +82,16 @@ struct opCode check_opcode(u8_t *data) {
 
 void respond_RRQ(u8_t *data) {
     enum tftp_operation tftp_code = check_opcode(data).tftp_code;
-
     char *filename;
     void *file;
     u8_t *file_bytes;
-
-    if (tftp_code == TFTPOP_RRQ && flag_client == 1) {
+    if (tftp_code == TFTPOP_RRQ && jeton == 1) {
         filename = malloc(sizeof(char));
         file_bytes = malloc(sizeof(u8_t));
         dataToSend = malloc(sizeof(u8_t));
 
         // Signal that the server is treating a RRQ and that any other RRQ should wait
-        flag_client = 0;
+        jeton = 0;
 
         // Copy the filename within the RRQ packet in "filename"
         strcpy(filename, data + 2);
@@ -141,11 +138,11 @@ void respond_RRQ(u8_t *data) {
     }
 
         /*
-         * The server should already be responding to a request: flag_client = 0
+         * The server should already be responding to a request: jeton = 0
          * The ACK operation for receiving data
          * The block_counter of data should be the same as the block_counter of the ACK
          */
-    else if (tftp_code == TFTPOP_ACK && flag_client == 0
+    else if (tftp_code == TFTPOP_ACK && jeton == 0
              && *(data + 2) == (block_counter >> 8) && *(data + 3) == block_counter) {
         netbuf_delete(buf);
 
@@ -171,7 +168,7 @@ void respond_RRQ(u8_t *data) {
             netconn_disconnect(tftp_server);
 
             // The server can treat a new "RRQ"
-            flag_client = 1;
+            jeton = 1;
 
         } else { // Before the last 512 Bytes of "dataToSend"
             // Move 516 Bytes of data to the buffer
